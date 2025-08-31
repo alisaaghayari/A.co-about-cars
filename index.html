@@ -247,8 +247,14 @@
   <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
 </div>
 
+<audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<div id="overlay">
+  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+</div>
+
 <script>
-  function playSound() {
+  window.addEventListener("load", function () {
     const sound = document.getElementById("engineSound");
     const overlay = document.getElementById("overlay");
 
@@ -259,9 +265,14 @@
         overlay.classList.remove("show");
       }, 4000); // نمایش متن برای ۴ ثانیه
     }).catch(e => {
-      console.log("Autoplay blocked:", e);
+      console.log("Autoplay blocked by browser:", e);
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000);
     });
-  }
-</script> 
+  });
+</script>
+
 </body>
       </html>
