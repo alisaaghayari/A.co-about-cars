@@ -117,6 +117,51 @@
     .nav-links a:hover {
       background-color: #e03e3e;
     }
+    button {
+      margin-top: 4rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #ff4e50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e03e3e;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 999;
+    }
+
+    #overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #overlay h2 {
+      color: #f9d423;
+      font-size: 1.5rem;
+      background-color: #222;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
   </style>
 </head>
 <body>
@@ -182,6 +227,41 @@
       <tr><th>Brand</th><th>Specialty</th><th>Owner</th></tr>
       <tr><td>Ford</td><td>F-150, Mustang, Bronco</td><td>Ford Motor Company</td></tr>
       <tr><td>Chevrolet</td><td>Camaro, Corvette, Silverado</td><td>General Motors</td></tr>
-      <tr><td>Cadillac</td><td>Luxury sedans & EVs</td><td>
-      </body>
+      <tr><td>Cadillac</td><td>Luxury sedans & EVs</td>?<td>
+        <audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<script>
+  window.addEventListener("load", function() {
+    const sound = document.getElementById("engineSound");
+    sound.play().catch(e => {
+      console.log("Autoplay blocked by browser:", e);
+    });
+  });
+</script>
+<button onclick="document.getElementById('engineSound').play()">🔊 Start Engine</button>
+<button onclick="playSound()">🔊 Start Engine</button>
+
+<audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<div id="overlay">
+  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+</div>
+
+<script>
+  function playSound() {
+    const sound = document.getElementById("engineSound");
+    const overlay = document.getElementById("overlay");
+
+    sound.play().then(() => {
+      overlay.classList.add("show");
+
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000); // نمایش متن برای ۴ ثانیه
+    }).catch(e => {
+      console.log("Autoplay blocked:", e);
+    });
+  }
+</script> 
+</body>
       </html>
