@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,6 +163,40 @@
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(255,255,255,0.3);
     }
+    .fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 600px) {
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .menu a {
+    margin: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .img {
+    width: 90%;
+  }
+
+  button {
+    width: 80%;
+    font-size: 1rem;
+  }
+}
   </style>
 </head>
 <body>
@@ -174,6 +209,8 @@
     <a href="#usa">US Brands</a>
     <a href="form.html" target="_blank">Join Us</a>
     <a href="tamasbama.html" target="_blank">Contact</a>
+    <a href="#news">Car News</a>
+
   </div>
 
   <h1 id="home"><mark>Welcome to A.co</mark></h1>
@@ -186,7 +223,7 @@
     </p>
   </div>
 
-  <div class="section" id="uk">
+  <div class="section fade-in" id="uk">
     <h2>🇬🇧 British Car Manufacturers</h2>
     <p>British brands are known for luxury, elegance, and motorsport heritage. From handcrafted Bentleys to high-tech McLarens, the UK blends tradition with innovation.</p>
     <table class="brand-table">
@@ -250,7 +287,7 @@
 <audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
 
 <div id="overlay">
-  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+  <h1>Powered by Alisa Aghayari and Copilot.ai</h1>
 </div>
 
 <script>
@@ -273,6 +310,71 @@
     });
   });
 </script>
+<!-- 🔊 فایل صوتی و دکمه کنترل -->
+<audio id="engineSound" src="engine-start.mp3" preload="auto" autoplay></audio>
+<button id="toggleSound">🔇 Mute</button>
 
+<!-- ✨ افکت برند -->
+<div id="overlay">
+  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+</div>
+
+<!-- 📰 بخش اخبار خودرو -->
+<div class="section" id="news">
+  <h2>📰 Latest car news</h2>
+  <ul style="line-height: 1.8;">
+    <li><a href="https://car.ir/news" target="_blank">Unveiling of the 500 tank at the Mashhad Exhibition 1404</a></li>
+    <li><a href="https://bama.ir/news" target="_blank">The new generation of Volkswagen T-Roc was introduced</a></li>
+    <li><a href="https://www.donyayekhodro.com/" target="_blank">Automotive World Report from Mashhad Exhibition</a></li>
+    <li><a href="https://car.ir/news" target="_blank">New prices for Capra U and B announced</a></li>
+    <li><a href="https://bama.ir/news" target="_blank">Saipa Registration and Sales Conditions for Shahrivar 1404</a></li>
+  </ul>
+</div>
+
+<!-- 🎯 اسکریپت کنترل صدا و افکت -->
+<script>
+  const sound = document.getElementById("engineSound");
+  const toggleBtn = document.getElementById("toggleSound");
+  const overlay = document.getElementById("overlay");
+
+  toggleBtn.addEventListener("click", function () {
+    sound.muted = !sound.muted;
+    toggleBtn.textContent = sound.muted ? "🔊 Unmute" : "🔇 Mute";
+  });
+
+  window.addEventListener("load", function () {
+    sound.play().then(() => {
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000);
+    }).catch(() => {
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000);
+    });
+  });
+</script>
+<script>
+  const faders = document.querySelectorAll('.fade-in');
+
+  const appearOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    });
+  }, appearOptions);
+
+  faders.forEach(fader => {
+    appearOnScroll.observe(fader);
+  });
+</script>
 </body>
       </html>
