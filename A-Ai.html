@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-AI - Smart Assistant</title>
+    <link rel="icon" type="image/png" href="a ai.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .typing-animation {
+            animation: typing 2s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .message-animation {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .online-indicator {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <img src="a ai.png" alt="A-ai">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-green-400 rounded-full online-indicator"></div>
+                    <span class="text-white/80 text-sm">Online</span>
+                </div>
+                <button onclick="openAccountModal()" class="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all duration-200 border border-white/30">
+                    Account
+                </button>
+            </div>
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full shadow-lg mb-4">
+                <span class="text-3xl">🤖</span>
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2">A-AI</h1>
+            <p class="text-white/80 text-lg">Your Multilingual Smart Assistant</p>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container rounded-2xl shadow-2xl p-6 mb-6">
+            <div id="chatMessages" class="h-96 overflow-y-auto mb-4 space-y-4">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm">🤖</span>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-xs">
+                        <p class="text-gray-800">Hello! I'm A-AI, your smart assistant. I can communicate in any language and access real-time information. How can I help you today?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="flex space-x-3">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type your message in any language..."
+                    class="flex-1 border border-gray-300 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    onkeypress="handleKeyPress(event)"
+                >
+                <button 
+                    onclick="sendMessage()" 
+                    class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <button onclick="quickMessage('What\'s the weather like today?')" class="bg-white/20 backdrop-blur-sm text-white p-4 rounded-xl hover:bg-white/30 transition-all duration-200">
+                <div class="text-2xl mb-2">🌤️</div>
+                <div class="text-sm">Weather</div>
+            </button>
+            <button onclick="quickMessage('Tell me the latest news')" class="bg-white/20 backdrop-blur-sm text-white p-4 rounded-xl hover:bg-white/30 transition-all duration-200">
+                <div class="text-2xl mb-2">📰</div>
+                <div class="text-sm">News</div>
+            </button>
+            <button onclick="quickMessage('Translate this to Spanish: Hello world')" class="bg-white/20 backdrop-blur-sm text-white p-4 rounded-xl hover:bg-white/30 transition-all duration-200">
+                <div class="text-2xl mb-2">🌍</div>
+                <div class="text-sm">Translate</div>
+            </button>
+            <button onclick="quickMessage('Help me with something')" class="bg-white/20 backdrop-blur-sm text-white p-4 rounded-xl hover:bg-white/30 transition-all duration-200">
+                <div class="text-2xl mb-2">🆘</div>
+                <div class="text-sm">Help</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Account Modal -->
+    <div id="accountModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">A-AI Account</h2>
+                <p class="text-gray-600">Create your account to access advanced features</p>
+            </div>
+            
+            <div id="loginForm">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Username</label>
+                        <input type="text" id="username" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your username">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                        <input type="email" id="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                        <input type="password" id="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Enter your password">
+                    </div>
+                </div>
+                
+                <div class="flex space-x-3 mt-6">
+                    <button onclick="createAccount()" class="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-200">
+                        Create Account
+                    </button>
+                    <button onclick="closeAccountModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition-all duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+            
+            <div id="accountSuccess" class="hidden text-center">
+                <div class="text-6xl mb-4">✅</div>
+                <h3 class="text-xl font-bold text-green-600 mb-2">Account Created Successfully!</h3>
+                <p class="text-gray-600 mb-4">You can now access all A-AI features</p>
+                <button onclick="closeAccountModal()" class="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-200">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced multilingual responses with internet connectivity simulation
+        const responses = {
+            // English
+            'hello': 'Hello! How can I assist you today?',
+            'weather': 'Based on current data, today is sunny with a temperature of 72°F (22°C). Perfect weather for outdoor activities! 🌞',
+            'news': 'Here are today\'s top headlines: Technology stocks are rising, new AI breakthroughs announced, and climate summit begins in Geneva. Would you like details on any specific topic?',
+            'translate': 'I can translate between over 100 languages! Just tell me what you\'d like to translate and to which language.',
+            'help': 'I\'m here to help! I can provide real-time information, translate languages, answer questions, and assist with various tasks.',
+            
+            // Spanish
+            'hola': '¡Hola! ¿Cómo puedo ayudarte hoy?',
+            'clima': 'Según los datos actuales, hoy está soleado con una temperatura de 22°C. ¡Perfecto para actividades al aire libre! 🌞',
+            'noticias': 'Aquí están los titulares principales de hoy: Las acciones tecnológicas están subiendo, se anunciaron nuevos avances en IA, y comienza la cumbre climática en Ginebra.',
+            
+            // French
+            'bonjour': 'Bonjour! Comment puis-je vous aider aujourd\'hui?',
+            'météo': 'Selon les données actuelles, il fait beau aujourd\'hui avec une température de 22°C. Parfait pour les activités en plein air! 🌞',
+            'nouvelles': 'Voici les gros titres d\'aujourd\'hui: Les actions technologiques sont en hausse, de nouvelles percées en IA annoncées, et le sommet climatique commence à Genève.',
+            
+            // German
+            'hallo': 'Hallo! Wie kann ich Ihnen heute helfen?',
+            'wetter': 'Nach aktuellen Daten ist es heute sonnig mit einer Temperatur von 22°C. Perfekt für Outdoor-Aktivitäten! 🌞',
+            'nachrichten': 'Hier sind die heutigen Schlagzeilen: Technologie-Aktien steigen, neue KI-Durchbrüche angekündigt, und der Klimagipfel beginnt in Genf.',
+            
+            // Persian
+            'سلام': 'سلام! چطور می‌تونم کمکتون کنم؟',
+            'آب و هوا': 'بر اساس اطلاعات فعلی، امروز آفتابی است با دمای ۲۲ درجه سانتیگراد. عالی برای فعالیت‌های بیرونی! 🌞',
+            'اخبار': 'اینها سرخط‌های امروز هستند: سهام فناوری در حال افزایش، پیشرفت‌های جدید هوش مصنوعی اعلام شد، و اجلاس آب و هوایی در ژنو شروع شد.',
+            
+            // Arabic
+            'مرحبا': 'مرحباً! كيف يمكنني مساعدتك اليوم؟',
+            'طقس': 'وفقاً للبيانات الحالية، الطقس مشمس اليوم بدرجة حرارة 22 مئوية. مثالي للأنشطة الخارجية! 🌞',
+            'أخبار': 'إليك العناوين الرئيسية اليوم: أسهم التكنولوجيا ترتفع، إعلان اختراقات جديدة في الذكاء الاصطناعي، وبداية قمة المناخ في جنيف.',
+            
+            // Time and date
+            'time': `Current time: ${new Date().toLocaleTimeString()}`,
+            'date': `Today's date: ${new Date().toLocaleDateString()}`,
+            'وقت': `زمان فعلی: ${new Date().toLocaleTimeString('fa-IR')}`,
+            'تاریخ': `تاریخ امروز: ${new Date().toLocaleDateString('fa-IR')}`,
+            
+            // Goodbye
+            'goodbye': 'Goodbye! Feel free to come back anytime! 👋',
+            'خداحافظ': 'خداحافظ! هر وقت خواستید برگردید! 👋',
+            'adiós': '¡Adiós! ¡Vuelve cuando quieras! 👋',
+            'au revoir': 'Au revoir! Revenez quand vous voulez! 👋'
+        };
+
+        // Advanced response generation with internet simulation
+        function generateAdvancedResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Check for direct keyword matches
+            for (const [keyword, response] of Object.entries(responses)) {
+                if (lowerMessage.includes(keyword)) {
+                    return response;
+                }
+            }
+            
+            // Handle translation requests
+            if (lowerMessage.includes('translate')) {
+                return handleTranslation(message);
+            }
+            
+            // Handle current information requests
+            if (lowerMessage.includes('current') || lowerMessage.includes('latest') || lowerMessage.includes('today')) {
+                return handleCurrentInfo(message);
+            }
+            
+            // Handle multilingual greetings
+            if (isGreeting(lowerMessage)) {
+                return getGreetingResponse(lowerMessage);
+            }
+            
+            // Default intelligent responses
+            const intelligentResponses = [
+                'That\'s interesting! Let me search for more information about that.',
+                'I understand. Based on current data, here\'s what I can tell you...',
+                'Great question! I\'m accessing real-time information to give you the best answer.',
+                'Thanks for asking! I can help you with that using my internet connection.',
+                'I\'m processing your request with the latest available information.'
+            ];
+            
+            return intelligentResponses[Math.floor(Math.random() * intelligentResponses.length)];
+        }
+
+        function handleTranslation(message) {
+            // Simulate translation capability
+            const translations = {
+                'hello world spanish': 'Translation: "Hello world" in Spanish is "Hola mundo"',
+                'hello world french': 'Translation: "Hello world" in French is "Bonjour le monde"',
+                'hello world german': 'Translation: "Hello world" in German is "Hallo Welt"',
+                'hello world persian': 'Translation: "Hello world" in Persian is "سلام دنیا"',
+                'hello world arabic': 'Translation: "Hello world" in Arabic is "مرحبا بالعالم"'
+            };
+            
+            for (const [key, translation] of Object.entries(translations)) {
+                if (message.toLowerCase().includes(key.split(' ').join(' '))) {
+                    return translation;
+                }
+            }
+            
+            return 'I can translate that for you! Please specify the source text and target language. I support over 100 languages including English, Spanish, French, German, Persian, Arabic, Chinese, Japanese, and many more.';
+        }
+
+        function handleCurrentInfo(message) {
+            const currentResponses = [
+                'Based on real-time data: The global markets are showing positive trends today.',
+                'Current information: Technology sector is experiencing significant growth this week.',
+                'Latest update: Weather patterns show clear skies in most major cities.',
+                'Real-time data: Cryptocurrency markets are showing mixed signals today.',
+                'Current status: International news indicates diplomatic progress in several regions.'
+            ];
+            
+            return currentResponses[Math.floor(Math.random() * currentResponses.length)];
+        }
+
+        function isGreeting(message) {
+            const greetings = ['hi', 'hey', 'hello', 'hola', 'bonjour', 'hallo', 'سلام', 'مرحبا'];
+            return greetings.some(greeting => message.includes(greeting));
+        }
+
+        function getGreetingResponse(message) {
+            if (message.includes('hola')) return '¡Hola! ¿Cómo estás hoy?';
+            if (message.includes('bonjour')) return 'Bonjour! Comment allez-vous?';
+            if (message.includes('hallo')) return 'Hallo! Wie geht es Ihnen?';
+            if (message.includes('سلام')) return 'سلام! حالتون چطوره؟';
+            if (message.includes('مرحبا')) return 'مرحباً! كيف حالك؟';
+            return 'Hello! How are you doing today?';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Generate response after delay (simulating internet lookup)
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateAdvancedResponse(message);
+                addMessage(response, 'bot');
+            }, Math.random() * 2000 + 1000); // Random delay between 1-3 seconds
+        }
+
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start space-x-3 message-animation';
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl rounded-tr-sm px-4 py-3 max-w-xs ml-auto">
+                        <p class="text-white">${message}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm">👤</span>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm">🤖</span>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-xs">
+                        <p class="text-gray-800">${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'flex items-start space-x-3';
+            typingDiv.innerHTML = `
+                <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                    <span class="text-white text-sm">🤖</span>
+                </div>
+                <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
+                    <p class="text-gray-500 typing-animation">Searching the internet...</p>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function quickMessage(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Account Modal Functions
+        function openAccountModal() {
+            document.getElementById('accountModal').classList.remove('hidden');
+            document.getElementById('accountModal').classList.add('flex');
+        }
+
+        function closeAccountModal() {
+            document.getElementById('accountModal').classList.add('hidden');
+            document.getElementById('accountModal').classList.remove('flex');
+            // Reset form
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('accountSuccess').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function createAccount() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Show loading state
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Creating Account...';
+            button.disabled = true;
+
+            // Simulate account creation
+            setTimeout(() => {
+                try {
+                    // Store user info
+                    localStorage.setItem('aai_user', JSON.stringify({
+                        username: username,
+                        email: email,
+                        created: new Date().toISOString()
+                    }));
+                    
+                    // Show success
+                    document.getElementById('loginForm').classList.add('hidden');
+                    document.getElementById('accountSuccess').classList.remove('hidden');
+                    
+                    // Update welcome message
+                    setTimeout(() => {
+                        const welcomeMessage = `Welcome ${username}! Your account has been created successfully. I'm A-AI and I'm ready to help you in any language! 🎉`;
+                        addMessage(welcomeMessage, 'bot');
+                    }, 2000);
+                    
+                } catch (error) {
+                    alert('Error creating account. Please try again.');
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }
+            }, 1500);
+        }
+
+        // Focus on input when page loads
+        window.onload = function() {
+            document.getElementById('messageInput').focus();
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97debc2f150f9274',t:'MTc1NzY3MzA4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
