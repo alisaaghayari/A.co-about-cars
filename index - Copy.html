@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A.co | Automotive World</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000000e4;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .menu {
+      background-color: #1c1c1c;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .menu a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background-color: #ff4e50;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu a:hover {
+      background-color: #e03e3e;
+    }
+
+    h1 {
+      margin: 30px 0 10px;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    .img {
+      display: block;
+      margin: 0 auto 20px;
+      width: 300px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .section {
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: #1c1c1c;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    }
+
+    .section h2 {
+      color: #f9d423;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #f9d423;
+      padding-bottom: 0.5rem;
+    }
+
+    .section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #ddd;
+    }
+
+    .brand-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .brand-table th, .brand-table td {
+      border: 1px solid #444;
+      padding: 0.8rem;
+      text-align: left;
+    }
+
+    .brand-table th {
+      background-color: #333;
+      color: #f9d423;
+    }
+
+    .brand-table td {
+      background-color: #1c1c1c;
+    }
+
+    .nav-links {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #ff4e50;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #e03e3e;
+    }
+    button {
+      margin-top: 4rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #ff4e50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e03e3e;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      z-index: 999;
+    }
+
+    #overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #overlay h2 {
+      color: #f9d423;
+      font-size: 1.5rem;
+      background-color: #222;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+    .fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 600px) {
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .menu a {
+    margin: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .img {
+    width: 90%;
+  }
+
+  button {
+    width: 80%;
+    font-size: 1rem;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- 🔥 منوی دایوی -->
+  <div class="menu">
+    <a href="#home">Home</a>
+    <a href="#uk">UK Brands</a>
+    <a href="#germany">German Brands</a>
+    <a href="#usa">US Brands</a>
+    <a href="form.html" target="_blank">Join Us</a>
+    <a href="tamasbama.html" target="_blank">Contact</a>
+    <a href="#news">Car News</a>
+    <a href="A-Ai.html" target="_blank">talk whit AI</a>
+    <a href="A search.html" target="_blank">go to web browser</a>
+    <a href="A.co+.html" target="_blank">A.CO+</a>
+    
+  </div>
+
+  <h1 id="home"><mark>Welcome to A.co</mark></h1>
+  <img src="favicon.png" alt="A photo" class="img" />
+
+  <div class="section">
+    <h2>Basic Car Knowledge</h2>
+    <p>
+      Every car is a combination of powerful systems working together. The <strong>engine</strong> converts fuel into motion. The <strong>transmission</strong> controls speed and torque. The <strong>battery</strong> powers electronics, and the <strong>radiator</strong> keeps the engine cool. Understanding these helps you drive smarter and maintain your car better.
+    </p>
+  </div>
+
+  <div class="section fade-in" id="uk">
+    <h2>🇬🇧 British Car Manufacturers</h2>
+    <p>British brands are known for luxury, elegance, and motorsport heritage. From handcrafted Bentleys to high-tech McLarens, the UK blends tradition with innovation.</p>
+    <table class="brand-table">
+      <tr><th>Brand</th><th>Specialty</th><th>Owner</th></tr>
+      <tr><td>Rolls-Royce</td><td>Ultra-luxury sedans</td><td>BMW (Germany)</td></tr>
+      <tr><td>Bentley</td><td>Handcrafted grand tourers</td><td>Volkswagen (Germany)</td></tr>
+      <tr><td>Jaguar</td><td>Sporty luxury cars</td><td>Tata Motors (India)</td></tr>
+      <tr><td>Land Rover</td><td>Premium off-road SUVs</td><td>Tata Motors (India)</td></tr>
+      <tr><td>McLaren</td><td>High-performance supercars</td><td>Independent</td></tr>
+      <tr><td>Aston Martin</td><td>Iconic British sports cars</td><td>Private investors</td></tr>
+      <tr><td>Mini</td><td>Compact urban cars</td><td>BMW</td></tr>
+      <tr><td>Lotus</td><td>Lightweight track cars</td><td>Geely (China)</td></tr>
+      <tr><td>Morgan</td><td>Classic wood-framed cars</td><td>Investindustrial (Italy)</td></tr>
+    </table>
+  </div>
+
+  <div class="section" id="germany">
+    <h2>🇩🇪 German Car Manufacturers</h2>
+    <p>Germany is the engineering powerhouse of the automotive world. Precision, performance, and innovation define its legendary brands.</p>
+    <table class="brand-table">
+      <tr><th>Brand</th><th>Specialty</th><th>Owner</th></tr>
+      <tr><td>Mercedes-Benz</td><td>Luxury & tech innovation</td><td>Mercedes-Benz Group</td></tr>
+      <tr><td>BMW</td><td>Dynamic driving experience</td><td>BMW Group</td></tr>
+      <tr><td>Audi</td><td>Modern design & smart systems</td><td>Volkswagen Group</td></tr>
+      <tr><td>Volkswagen</td><td>Reliable family cars</td><td>Volkswagen Group</td></tr>
+      <tr><td>Porsche</td><td>High-performance sports cars</td><td>Volkswagen Group</td></tr>
+      <tr><td>Opel</td><td>Affordable urban vehicles</td><td>Stellantis</td></tr>
+      <tr><td>Maybach</td><td>Ultra-luxury Mercedes division</td><td>Mercedes-Benz Group</td></tr>
+    </table>
+  </div>
+
+  <div class="section" id="usa">
+    <h2>🇺🇸 American Car Manufacturers</h2>
+    <p>
+      America is home to muscle cars, powerful trucks, and electric pioneers. From Ford’s legacy to Tesla’s innovation, the U.S. automotive industry blends tradition with cutting-edge technology. The "Big Three"—Ford, General Motors, and Stellantis—dominate the market, while new players like Tesla and Rivian are reshaping the future.
+    </p>
+    <table class="brand-table">
+      <tr><th>Brand</th><th>Specialty</th><th>Owner</th></tr>
+      <tr><td>Ford</td><td>F-150, Mustang, Bronco</td><td>Ford Motor Company</td></tr>
+      <tr><td>Chevrolet</td><td>Camaro, Corvette, Silverado</td><td>General Motors</td></tr>
+      <tr><td>Cadillac</td><td>Luxury sedans & EVs</td>?<td>
+        <audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<script>
+  window.addEventListener("load", function() {
+    const sound = document.getElementById("engineSound");
+    sound.play().catch(e => {
+      console.log("Autoplay blocked by browser:", e);
+    });
+  });
+</script>
+<button onclick="document.getElementById('engineSound').play()">🔊 Start Engine</button>
+<button onclick="playSound()">🔊 Start Engine</button>
+
+<audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<div id="overlay">
+  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+</div>
+
+<audio id="engineSound" src="engine-start.mp3" preload="auto"></audio>
+
+<div id="overlay">
+  <h1>Powered by Alisa Aghayari and Copilot.ai</h1>
+</div>
+
+<script>
+  window.addEventListener("load", function () {
+    const sound = document.getElementById("engineSound");
+    const overlay = document.getElementById("overlay");
+
+    sound.play().then(() => {
+      overlay.classList.add("show");
+
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000); // نمایش متن برای ۴ ثانیه
+    }).catch(e => {
+      console.log("Autoplay blocked by browser:", e);
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 17000);
+    });
+  });
+</script>
+<!-- 🔊 فایل صوتی و دکمه کنترل -->
+<audio id="engineSound" src="engine-start.mp3" preload="auto" autoplay></audio>
+<button id="toggleSound">🔇 Mute</button>
+
+<!-- ✨ افکت برند -->
+<div id="overlay">
+  <h2>Powered by Alisa Aghayari and Copilot.ai</h2>
+</div>
+
+<!-- 📰 بخش اخبار خودرو -->
+<div class="section" id="news">
+  <h2>📰 Latest car news</h2>
+  <ul style="line-height: 1.8;">
+    <li><a href="https://car.ir/news" target="_blank">Unveiling of the 500 tank at the Mashhad Exhibition 1404</a></li>
+    <li><a href="https://bama.ir/news" target="_blank">The new generation of Volkswagen T-Roc was introduced</a></li>
+    <li><a href="https://www.donyayekhodro.com/" target="_blank">Automotive World Report from Mashhad Exhibition</a></li>
+    <li><a href="https://car.ir/news" target="_blank">New prices for Capra U and B announced</a></li>
+    <li><a href="https://bama.ir/news" target="_blank">Saipa Registration and Sales Conditions for Shahrivar 1404</a></li>
+  </ul>
+</div>
+
+<!-- 🎯 اسکریپت کنترل صدا و افکت -->
+<script>
+  const sound = document.getElementById("engineSound");
+  const toggleBtn = document.getElementById("toggleSound");
+  const overlay = document.getElementById("overlay");
+
+  toggleBtn.addEventListener("click", function () {
+    sound.muted = !sound.muted;
+    toggleBtn.textContent = sound.muted ? "🔊 Unmute" : "🔇 Mute";
+  });
+
+  window.addEventListener("load", function () {
+    sound.play().then(() => {
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000);
+    }).catch(() => {
+      overlay.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+      }, 4000);
+    });
+  });
+</script>
+<script>
+  const faders = document.querySelectorAll('.fade-in');
+
+  const appearOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  };
+
+  const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    });
+  }, appearOptions);
+
+  faders.forEach(fader => {
+    appearOnScroll.observe(fader);
+  });
+</script>
+</body>
+      </html>

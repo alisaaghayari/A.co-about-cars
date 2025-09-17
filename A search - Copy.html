@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Search Browser</title>
+    <link rel="icon" type="image/png" href="a ai (1).png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .browser-frame {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+        }
+        
+        .address-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-button:active {
+            transform: translateY(0);
+        }
+        
+        .loading-bar {
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
+            background-size: 200% 100%;
+            animation: loading 2s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-bar.active {
+            opacity: 1;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .logo {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .search-box {
+            box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .search-box:hover {
+            box-shadow: 0 2px 8px 1px rgba(64,60,67,.24);
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 2px 8px 1px rgba(64,60,67,.24);
+        }
+        
+        .quick-link:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result-item {
+            transition: all 0.2s ease;
+        }
+        
+        .result-item:hover {
+            background-color: #f8fafc;
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <img src="a ai (1).png" alt="A search">
+    <div class="browser-frame min-h-screen p-4">
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Browser Header -->
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                <div class="flex items-center gap-2">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div class="flex-1 text-center">
+                        <span class="logo text-lg font-bold">A Search</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Bar -->
+            <div class="address-bar p-4 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <!-- Navigation Buttons -->
+                    <div class="flex gap-2">
+                        <button id="backBtn" class="nav-button bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button id="forwardBtn" class="nav-button bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        <button id="refreshBtn" class="nav-button bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                        </button>
+                        <button id="homeBtn" class="nav-button bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Address Bar -->
+                    <div class="flex-1 relative">
+                        <div class="flex items-center bg-white border-2 border-gray-300 rounded-lg overflow-hidden focus-within:border-blue-500 transition-colors">
+                            <div class="px-3 py-2 bg-gray-50 border-r border-gray-300">
+                                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="addressBar" 
+                                placeholder="Enter website URL or search..."
+                                class="flex-1 px-4 py-3 focus:outline-none"
+                                value="asearch://homepage"
+                            >
+                            <button id="goBtn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors">
+                                Go
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bookmark Button -->
+                    <button id="bookmarkBtn" class="nav-button bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Loading Bar -->
+                <div id="loadingBar" class="loading-bar mt-3 rounded-full"></div>
+            </div>
+            
+            <!-- Bookmarks Bar -->
+            <div id="bookmarksBar" class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <div class="flex gap-2 flex-wrap">
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="asearch://homepage">
+                        🏠 Home
+                    </button>
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="https://www.wikipedia.org">
+                        📚 Wikipedia
+                    </button>
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="https://www.archive.org">
+                        📖 Archive.org
+                    </button>
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="https://www.bbc.com">
+                        📺 BBC
+                    </button>
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="https://stackoverflow.com">
+                        💻 Stack Overflow
+                    </button>
+                    <button class="bookmark-item bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors" data-url="https://news.ycombinator.com">
+                        🔥 Hacker News
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Browser Content -->
+            <div id="browserContent" class="bg-white" style="height: 600px; overflow-y: auto;">
+                <!-- Google-like Homepage -->
+                <div id="homepage" class="flex flex-col items-center justify-center h-full bg-white">
+                    <div class="text-center mb-8">
+                        <div class="logo text-6xl font-bold mb-8">A Search</div>
+                        <div class="relative max-w-lg mx-auto">
+                            <div class="search-box flex items-center bg-white border border-gray-300 rounded-full px-6 py-4 hover:shadow-lg transition-shadow focus-within:border-blue-500">
+                                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input 
+                                    type="text" 
+                                    id="searchInput"
+                                    placeholder="Search the web..."
+                                    class="flex-1 text-lg focus:outline-none"
+                                >
+                                <button id="searchBtn" class="ml-3 text-gray-400 hover:text-blue-500 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 mt-8">
+                            <button class="search-engine-btn bg-gray-100 hover:bg-gray-200 px-6 py-3 rounded-lg font-medium transition-colors" data-engine="search">
+                                A Search
+                            </button>
+                            <button class="search-engine-btn bg-gray-100 hover:bg-gray-200 px-6 py-3 rounded-lg font-medium transition-colors" data-engine="lucky">
+                                I'm Feeling Lucky
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div class="grid grid-cols-4 gap-6 mt-12 max-w-2xl">
+                        <a href="#" class="quick-link flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-all duration-200" data-url="https://www.wikipedia.org">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                                <span class="text-2xl">📚</span>
+                            </div>
+                            <span class="text-sm font-medium">Wikipedia</span>
+                        </a>
+                        <a href="#" class="quick-link flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-all duration-200" data-url="https://news.ycombinator.com">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-2">
+                                <span class="text-2xl">🔥</span>
+                            </div>
+                            <span class="text-sm font-medium">News</span>
+                        </a>
+                        <a href="#" class="quick-link flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-all duration-200" data-url="https://stackoverflow.com">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                                <span class="text-2xl">💻</span>
+                            </div>
+                            <span class="text-sm font-medium">Code</span>
+                        </a>
+                        <a href="#" class="quick-link flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-all duration-200" data-url="https://www.bbc.com">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-2">
+                                <span class="text-2xl">📺</span>
+                            </div>
+                            <span class="text-sm font-medium">BBC</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Search Results Page -->
+                <div id="searchResults" class="hidden p-6">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="logo text-2xl font-bold cursor-pointer" onclick="showHomepage()">A Search</div>
+                                <div class="flex-1 relative max-w-lg">
+                                    <input 
+                                        type="text" 
+                                        id="searchInputResults"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+                                    >
+                                </div>
+                            </div>
+                            <div class="text-sm text-gray-600" id="resultsCount">About 1,234,567 results (0.45 seconds)</div>
+                        </div>
+                        
+                        <div id="resultsList" class="space-y-6">
+                            <!-- Search results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Website View -->
+                <div id="websiteView" class="hidden h-full">
+                    <div class="h-full flex flex-col">
+                        <div class="bg-gray-50 p-4 border-b">
+                            <div class="flex items-center gap-4">
+                                <button id="backToSearch" class="text-blue-500 hover:text-blue-700 font-medium">← Back to Search</button>
+                                <div class="flex-1 text-sm text-gray-600" id="currentSite"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex items-center justify-center bg-gray-50">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🌐</div>
+                                <h3 class="text-xl font-semibold mb-2">Website Preview</h3>
+                                <p class="text-gray-600 mb-4">This is a demo browser. In a real browser, the website would load here.</p>
+                                <button id="openInNewTab" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">
+                                    Open in New Tab
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status Bar -->
+            <div class="bg-gray-50 px-4 py-2 border-t border-gray-200">
+                <div class="flex items-center justify-between text-sm text-gray-600">
+                    <div id="statusText">Ready</div>
+                    <div id="securityStatus" class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        <span>Secure Connection</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ASearchBrowser {
+            constructor() {
+                this.history = ['asearch://homepage'];
+                this.currentIndex = 0;
+                this.bookmarks = JSON.parse(localStorage.getItem('aSearchBookmarks') || '[]');
+                this.currentView = 'homepage';
+                
+                this.initializeElements();
+                this.bindEvents();
+                this.updateNavigationButtons();
+                this.showHomepage();
+            }
+            
+            initializeElements() {
+                this.addressBar = document.getElementById('addressBar');
+                this.backBtn = document.getElementById('backBtn');
+                this.forwardBtn = document.getElementById('forwardBtn');
+                this.refreshBtn = document.getElementById('refreshBtn');
+                this.homeBtn = document.getElementById('homeBtn');
+                this.goBtn = document.getElementById('goBtn');
+                this.bookmarkBtn = document.getElementById('bookmarkBtn');
+                this.loadingBar = document.getElementById('loadingBar');
+                this.statusText = document.getElementById('statusText');
+                
+                // Content areas
+                this.homepage = document.getElementById('homepage');
+                this.searchResults = document.getElementById('searchResults');
+                this.websiteView = document.getElementById('websiteView');
+                
+                // Search elements
+                this.searchInput = document.getElementById('searchInput');
+                this.searchBtn = document.getElementById('searchBtn');
+                this.searchInputResults = document.getElementById('searchInputResults');
+            }
+            
+            bindEvents() {
+                // Navigation buttons
+                this.backBtn.addEventListener('click', () => this.goBack());
+                this.forwardBtn.addEventListener('click', () => this.goForward());
+                this.refreshBtn.addEventListener('click', () => this.refresh());
+                this.homeBtn.addEventListener('click', () => this.goHome());
+                this.goBtn.addEventListener('click', () => this.navigate());
+                this.bookmarkBtn.addEventListener('click', () => this.addBookmark());
+                
+                // Address bar
+                this.addressBar.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.navigate();
+                    }
+                });
+                
+                // Search functionality
+                this.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.performSearch();
+                    }
+                });
+                
+                this.searchBtn.addEventListener('click', () => this.performSearch());
+                
+                this.searchInputResults.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.performSearch(this.searchInputResults.value);
+                    }
+                });
+                
+                // Search engine buttons
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('search-engine-btn')) {
+                        const engine = e.target.getAttribute('data-engine');
+                        if (engine === 'search') {
+                            this.performSearch();
+                        } else if (engine === 'lucky') {
+                            this.feelingLucky();
+                        }
+                    }
+                });
+                
+                // Bookmark items
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('bookmark-item')) {
+                        const url = e.target.getAttribute('data-url');
+                        this.navigateTo(url);
+                    }
+                });
+                
+                // Quick links
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.quick-link')) {
+                        e.preventDefault();
+                        const url = e.target.closest('.quick-link').getAttribute('data-url');
+                        this.navigateTo(url);
+                    }
+                });
+                
+                // Back to search button
+                document.getElementById('backToSearch').addEventListener('click', () => {
+                    this.showSearchResults();
+                });
+                
+                // Open in new tab button
+                document.getElementById('openInNewTab').addEventListener('click', () => {
+                    const currentUrl = this.addressBar.value;
+                    if (currentUrl.startsWith('http')) {
+                        window.open(currentUrl, '_blank');
+                    }
+                });
+            }
+            
+            navigate() {
+                let url = this.addressBar.value.trim();
+                if (!url) return;
+                
+                // Handle search queries
+                if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('asearch://')) {
+                    this.performSearch(url);
+                    return;
+                }
+                
+                this.navigateTo(url);
+            }
+            
+            navigateTo(url) {
+                this.showLoading();
+                this.updateStatus('Loading...');
+                
+                // Add to history
+                this.history = this.history.slice(0, this.currentIndex + 1);
+                this.history.push(url);
+                this.currentIndex = this.history.length - 1;
+                
+                // Update address bar
+                this.addressBar.value = url;
+                this.updateNavigationButtons();
+                
+                // Route to appropriate view
+                if (url === 'asearch://homepage') {
+                    setTimeout(() => {
+                        this.showHomepage();
+                        this.hideLoading();
+                    }, 500);
+                } else if (url.startsWith('asearch://search?q=')) {
+                    const query = decodeURIComponent(url.split('q=')[1]);
+                    setTimeout(() => {
+                        this.showSearchResults(query);
+                        this.hideLoading();
+                    }, 800);
+                } else {
+                    setTimeout(() => {
+                        this.showWebsite(url);
+                        this.hideLoading();
+                    }, 1000);
+                }
+            }
+            
+            performSearch(query = null) {
+                const searchQuery = query || this.searchInput.value.trim();
+                if (!searchQuery) return;
+                
+                const searchUrl = `asearch://search?q=${encodeURIComponent(searchQuery)}`;
+                this.navigateTo(searchUrl);
+            }
+            
+            feelingLucky() {
+                const luckyUrls = [
+                    'https://www.wikipedia.org',
+                    'https://news.ycombinator.com',
+                    'https://stackoverflow.com',
+                    'https://www.bbc.com'
+                ];
+                const randomUrl = luckyUrls[Math.floor(Math.random() * luckyUrls.length)];
+                this.navigateTo(randomUrl);
+            }
+            
+            showHomepage() {
+                this.currentView = 'homepage';
+                this.homepage.classList.remove('hidden');
+                this.searchResults.classList.add('hidden');
+                this.websiteView.classList.add('hidden');
+                this.addressBar.value = 'asearch://homepage';
+                this.updateStatus('Ready');
+            }
+            
+            showSearchResults(query = '') {
+                this.currentView = 'searchResults';
+                this.homepage.classList.add('hidden');
+                this.searchResults.classList.remove('hidden');
+                this.websiteView.classList.add('hidden');
+                
+                if (query) {
+                    this.searchInputResults.value = query;
+                    this.generateSearchResults(query);
+                }
+                
+                this.updateStatus(`Search results for "${query}"`);
+            }
+            
+            showWebsite(url) {
+                this.currentView = 'websiteView';
+                this.homepage.classList.add('hidden');
+                this.searchResults.classList.add('hidden');
+                this.websiteView.classList.remove('hidden');
+                
+                document.getElementById('currentSite').textContent = url;
+                this.updateStatus(`Viewing ${url}`);
+            }
+            
+            generateSearchResults(query) {
+                const resultsList = document.getElementById('resultsList');
+                const sampleResults = [
+                    {
+                        title: `${query} - Wikipedia`,
+                        url: 'https://www.wikipedia.org',
+                        description: `Learn about ${query} on Wikipedia, the free encyclopedia. Comprehensive information and references available.`
+                    },
+                    {
+                        title: `${query} News - BBC`,
+                        url: 'https://www.bbc.com',
+                        description: `Latest news and updates about ${query} from BBC News. Stay informed with reliable reporting.`
+                    },
+                    {
+                        title: `${query} Discussion - Stack Overflow`,
+                        url: 'https://stackoverflow.com',
+                        description: `Technical discussions and solutions related to ${query}. Community-driven Q&A platform.`
+                    },
+                    {
+                        title: `${query} Archive - Internet Archive`,
+                        url: 'https://www.archive.org',
+                        description: `Historical content and archived materials about ${query}. Digital preservation library.`
+                    },
+                    {
+                        title: `${query} Community - Hacker News`,
+                        url: 'https://news.ycombinator.com',
+                        description: `Community discussions and insights about ${query}. Tech-focused social news website.`
+                    }
+                ];
+                
+                resultsList.innerHTML = sampleResults.map(result => `
+                    <div class="result-item p-4 rounded-lg cursor-pointer" onclick="browser.navigateTo('${result.url}')">
+                        <div class="text-blue-600 hover:underline text-lg font-medium mb-1">${result.title}</div>
+                        <div class="text-green-700 text-sm mb-2">${result.url}</div>
+                        <div class="text-gray-600 text-sm">${result.description}</div>
+                    </div>
+                `).join('');
+            }
+            
+            goBack() {
+                if (this.currentIndex > 0) {
+                    this.currentIndex--;
+                    const url = this.history[this.currentIndex];
+                    this.addressBar.value = url;
+                    this.updateNavigationButtons();
+                    this.navigateToUrl(url);
+                }
+            }
+            
+            goForward() {
+                if (this.currentIndex < this.history.length - 1) {
+                    this.currentIndex++;
+                    const url = this.history[this.currentIndex];
+                    this.addressBar.value = url;
+                    this.updateNavigationButtons();
+                    this.navigateToUrl(url);
+                }
+            }
+            
+            navigateToUrl(url) {
+                if (url === 'asearch://homepage') {
+                    this.showHomepage();
+                } else if (url.startsWith('asearch://search?q=')) {
+                    const query = decodeURIComponent(url.split('q=')[1]);
+                    this.showSearchResults(query);
+                } else {
+                    this.showWebsite(url);
+                }
+            }
+            
+            refresh() {
+                this.showLoading();
+                setTimeout(() => {
+                    this.hideLoading();
+                    this.updateStatus('Page refreshed');
+                }, 1000);
+            }
+            
+            goHome() {
+                this.navigateTo('asearch://homepage');
+            }
+            
+            addBookmark() {
+                const url = this.addressBar.value;
+                const title = prompt('Enter bookmark name:', this.getPageTitle(url));
+                
+                if (title) {
+                    const bookmark = { title, url };
+                    this.bookmarks.push(bookmark);
+                    localStorage.setItem('aSearchBookmarks', JSON.stringify(this.bookmarks));
+                    this.renderBookmarks();
+                    this.updateStatus('Bookmark added');
+                }
+            }
+            
+            getPageTitle(url) {
+                if (url === 'asearch://homepage') return 'A Search Home';
+                if (url.startsWith('asearch://search')) return 'Search Results';
+                try {
+                    const domain = new URL(url).hostname;
+                    return domain.replace('www.', '');
+                } catch {
+                    return 'New Page';
+                }
+            }
+            
+            renderBookmarks() {
+                const bookmarksBar = document.getElementById('bookmarksBar');
+                const existingBookmarks = bookmarksBar.querySelectorAll('.custom-bookmark');
+                existingBookmarks.forEach(bookmark => bookmark.remove());
+                
+                this.bookmarks.forEach(bookmark => {
+                    const bookmarkEl = document.createElement('button');
+                    bookmarkEl.className = 'bookmark-item custom-bookmark bg-white hover:bg-gray-100 px-3 py-1 rounded-md text-sm border border-gray-200 transition-colors';
+                    bookmarkEl.setAttribute('data-url', bookmark.url);
+                    bookmarkEl.textContent = bookmark.title;
+                    bookmarksBar.querySelector('.flex').appendChild(bookmarkEl);
+                });
+            }
+            
+            updateNavigationButtons() {
+                this.backBtn.disabled = this.currentIndex <= 0;
+                this.forwardBtn.disabled = this.currentIndex >= this.history.length - 1;
+            }
+            
+            showLoading() {
+                this.loadingBar.classList.add('active');
+            }
+            
+            hideLoading() {
+                this.loadingBar.classList.remove('active');
+            }
+            
+            updateStatus(message) {
+                this.statusText.textContent = message;
+                setTimeout(() => {
+                    this.statusText.textContent = 'Ready';
+                }, 3000);
+            }
+        }
+        
+        // Global browser instance
+        let browser;
+        
+        // Initialize browser when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            browser = new ASearchBrowser();
+        });
+        
+        // Global function for search results
+        function showHomepage() {
+            browser.showHomepage();
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97decdfab16e39d4',t:'MTc1NzY3MzgxNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
