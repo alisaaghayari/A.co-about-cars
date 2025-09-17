@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.co Plus | Premium Automotive Intelligence</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .brand-logo {
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+        }
+        
+        .brand-logo:hover {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-2xl font-bold text-orange-600">A+</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">A.co Plus</h1>
+                        <p class="text-orange-200 text-sm">Premium Automotive Intelligence</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-orange-200 transition-colors">Home</a>
+                    <a href="#brands" class="hover:text-orange-200 transition-colors">Brands</a>
+                    <a href="#features" class="hover:text-orange-200 transition-colors">Features</a>
+                    <a href="#about" class="hover:text-orange-200 transition-colors">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="floating mb-8">
+                <img src="favicon.png" alt="A.co Plus Premium Automotive" class="mx-auto rounded-2xl shadow-2xl max-w-md w-full h-64 object-cover border-4 border-white/20 backdrop-blur-sm transform hover:scale-105 transition-all duration-500" onerror="this.src=''; this.alt='Premium automotive experience awaits'; this.style.background='linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='<div class=\'text-6xl font-bold text-white/80 animate-pulse\'>A+</div>';">
+            </div>
+            <div class="floating">
+                <h2 class="text-5xl font-bold mb-6">Welcome to A.co Plus</h2>
+                <p class="text-xl mb-8 max-w-3xl mx-auto">Your premium destination for comprehensive automotive intelligence. Get detailed information about the world's finest car brands and models.</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
+                <button onclick="showChatBot()" class="bg-white text-orange-600 px-8 py-4 rounded-full font-semibold hover:bg-orange-50 transition-all transform hover:scale-105 shadow-lg">
+                    🤖 Chat with AI Assistant
+                </button>
+                <button onclick="showBrowser()" class="bg-orange-800 text-white px-8 py-4 rounded-full font-semibold hover:bg-orange-900 transition-all transform hover:scale-105 shadow-lg">
+                    🌐 Custom Browser
+                </button>
+                <button onclick="toggleTheme()" class="bg-gray-800 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-900 transition-all transform hover:scale-105 shadow-lg">
+                    🌓 Dark/Light
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Our Journey</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Building on 6 months of continuous innovation and automatic tool development</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h4 class="text-2xl font-bold text-gray-800 mb-6">6 Months of Excellence</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Automatic Tool Development</h5>
+                                <p class="text-gray-600">Our platform continuously evolves with self-improving algorithms</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Information Excellence</h5>
+                                <p class="text-gray-600">We provide comprehensive data, not products - pure knowledge</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="text-white text-sm font-bold">✓</span>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Global Brand Coverage</h5>
+                                <p class="text-gray-600">Extensive database of British, American, and German automotive brands</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl p-8 text-white">
+                        <div class="text-6xl font-bold mb-2">6</div>
+                        <div class="text-xl mb-4">Months of Innovation</div>
+                        <div class="text-orange-200">Continuously improving since day one</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Brands Section -->
+    <section id="brands" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Premium Automotive Brands</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Explore the finest British, American, and German automotive excellence</p>
+            </div>
+
+            <!-- British Brands -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold text-gray-800 mb-6 text-center">🇬🇧 British Excellence</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Rolls-Royce')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-black rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">RR</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Rolls-Royce</h5>
+                        <p class="text-gray-600 text-sm">Ultimate Luxury</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Bentley')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-800 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">B</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Bentley</h5>
+                        <p class="text-gray-600 text-sm">Grand Touring</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Aston Martin')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-600 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">AM</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Aston Martin</h5>
+                        <p class="text-gray-600 text-sm">British Sports Cars</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Jaguar')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gray-800 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">J</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Jaguar</h5>
+                        <p class="text-gray-600 text-sm">Grace & Performance</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- American Brands -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold text-gray-800 mb-6 text-center">🇺🇸 American Power</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Tesla')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">T</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Tesla</h5>
+                        <p class="text-gray-600 text-sm">Electric Innovation</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Ford')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">F</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Ford</h5>
+                        <p class="text-gray-600 text-sm">Built Ford Tough</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Chevrolet')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-yellow-500 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">C</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Chevrolet</h5>
+                        <p class="text-gray-600 text-sm">American Icon</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Cadillac')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-black rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">C</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Cadillac</h5>
+                        <p class="text-gray-600 text-sm">Luxury & Style</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- German Brands -->
+            <div class="mb-12">
+                <h4 class="text-2xl font-bold text-gray-800 mb-6 text-center">🇩🇪 German Engineering</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Mercedes-Benz')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gray-800 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">MB</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Mercedes-Benz</h5>
+                        <p class="text-gray-600 text-sm">The Best or Nothing</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('BMW')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">BMW</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">BMW</h5>
+                        <p class="text-gray-600 text-sm">Ultimate Driving Machine</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Audi')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-white font-bold text-lg">A</span>
+                        </div>
+                        <h5 class="font-semibent text-gray-800">Audi</h5>
+                        <p class="text-gray-600 text-sm">Vorsprung durch Technik</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center card-hover cursor-pointer" onclick="showBrandInfo('Porsche')">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-yellow-500 rounded-full flex items-center justify-center brand-logo">
+                            <span class="text-black font-bold text-lg">P</span>
+                        </div>
+                        <h5 class="font-semibold text-gray-800">Porsche</h5>
+                        <p class="text-gray-600 text-sm">Sports Car Legend</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Premium Features</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Advanced tools and capabilities for automotive enthusiasts</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 card-hover">
+                    <div class="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">🤖</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">AI Chat Assistant</h4>
+                    <p class="text-gray-600 mb-6">Get instant answers about any car brand, model, or automotive topic with our intelligent chatbot.</p>
+                    <button onclick="showChatBot()" class="bg-orange-600 text-white px-6 py-3 rounded-full hover:bg-orange-700 transition-colors">
+                        Start Chatting
+                    </button>
+                </div>
+                
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 card-hover">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">🌐</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">Custom Browser</h4>
+                    <p class="text-gray-600 mb-6">Access our specially designed browser with automotive-focused features and enhanced performance.</p>
+                    <button onclick="showBrowser()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors">
+                        Launch Browser
+                    </button>
+                </div>
+                
+                <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 card-hover">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl">📊</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">Detailed Analytics</h4>
+                    <p class="text-gray-600 mb-6">Comprehensive data and insights about automotive trends, specifications, and market analysis.</p>
+                    <button onclick="showAnalytics()" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors">
+                        View Analytics
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold">A+</span>
+                        </div>
+                        <span class="text-xl font-bold">A.co Plus</span>
+                    </div>
+                    <p class="text-gray-400">Premium automotive intelligence platform providing comprehensive information about the world's finest car brands.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Quick Links</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#brands" class="hover:text-white transition-colors">Brands</a></li>
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Tools</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><button onclick="showChatBot()" class="hover:text-white transition-colors text-left">AI Assistant</button></li>
+                        <li><button onclick="showBrowser()" class="hover:text-white transition-colors text-left">Custom Browser</button></li>
+                        <li><button onclick="showAnalytics()" class="hover:text-white transition-colors text-left">Analytics</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Contact</h5>
+                    <p class="text-gray-400 mb-2">6 months of continuous innovation</p>
+                    <p class="text-gray-400">Automatic tool development</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <a href="index.html" class="bg-gradient-to-r from-orange-600 to-red-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-orange-700 hover:to-red-700 transition-all transform hover:scale-105 shadow-lg mb-4 inline-block">
+                    🔙 Back to Normal A.co
+                </a>
+                <p class="text-gray-400">&copy; 2024 A.co Plus. Premium Automotive Intelligence Platform.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Brand Info Modal -->
+    <div id="brandModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 transform transition-all">
+            <div class="text-center">
+                <h3 id="brandName" class="text-2xl font-bold text-gray-800 mb-4"></h3>
+                <p id="brandDescription" class="text-gray-600 mb-6"></p>
+                <button onclick="closeBrandModal()" class="bg-orange-600 text-white px-6 py-3 rounded-full hover:bg-orange-700 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ChatBot Section -->
+    <div id="chatSection" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl w-full max-w-4xl h-5/6 mx-4 flex flex-col">
+            <div class="bg-gradient-to-r from-orange-600 to-red-600 text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold">🤖 A.co Plus AI Assistant</h3>
+                        <p class="text-orange-200">Premium automotive intelligence</p>
+                    </div>
+                    <button onclick="closeChatBot()" class="text-white hover:text-orange-200 text-2xl">✕</button>
+                </div>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto" id="chatMessages">
+                <div class="mb-4 p-4 bg-gray-100 rounded-lg">
+                    <strong>AI Assistant:</strong> Hello! I'm the A.co Plus AI Assistant. I can help you with car information and basic questions. For premium features including multilingual support and advanced capabilities, please upgrade or enter your premium access code.
+                </div>
+            </div>
+            <div class="p-6 border-t">
+                <div class="flex gap-3 mb-4">
+                    <input type="text" id="chatInput" placeholder="Ask me anything about cars..." class="flex-1 p-3 border rounded-full outline-none" onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button onclick="sendChatMessage()" class="bg-orange-600 text-white px-6 py-3 rounded-full hover:bg-orange-700">Send</button>
+                </div>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="showPremiumUpgrade()" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 text-sm">💎 Upgrade Premium</button>
+                    <button onclick="showFreeVersion()" class="bg-white text-gray-600 border px-6 py-2 rounded-full hover:bg-gray-50 text-sm">🆓 Use Free Version</button>
+                    <button onclick="showSecretAccess()" class="bg-gray-600 text-white px-6 py-2 rounded-full hover:bg-gray-700 text-sm">🔑 Secret Access</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Browser Section -->
+    <div id="browserSection" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl w-full max-w-6xl h-5/6 mx-4 flex flex-col">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🌐</span>
+                        <input type="text" class="bg-white text-black px-4 py-2 rounded-full flex-1 min-w-96" value="A.co Plus Premium Browser" readonly>
+                    </div>
+                    <button onclick="closeBrowser()" class="text-white hover:text-blue-200 text-2xl">✕</button>
+                </div>
+            </div>
+            <div class="flex-1 p-6 overflow-y-auto">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">🚗 Car Database</h4>
+                        <p class="text-gray-600 mb-4">Complete automotive specifications</p>
+                        <button class="bg-orange-600 text-white px-4 py-2 rounded-full">Browse Cars</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">📊 Market Analysis</h4>
+                        <p class="text-gray-600 mb-4">Real-time pricing and trends</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-full">View Data</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">🔧 Tech Specs</h4>
+                        <p class="text-gray-600 mb-4">Detailed technical information</p>
+                        <button class="bg-green-600 text-white px-4 py-2 rounded-full">Explore</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">🏪 Virtual Showroom</h4>
+                        <p class="text-gray-600 mb-4">360° car viewing experience</p>
+                        <button class="bg-purple-600 text-white px-4 py-2 rounded-full">Enter</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">📰 Auto News</h4>
+                        <p class="text-gray-600 mb-4">Latest automotive updates</p>
+                        <button class="bg-yellow-600 text-white px-4 py-2 rounded-full">Read News</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-gray-50 to-slate-50 p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-3">🎯 Recommendations</h4>
+                        <p class="text-gray-600 mb-4">AI-powered car suggestions</p>
+                        <button class="bg-gray-600 text-white px-4 py-2 rounded-full">Get Advice</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Upgrade Modal -->
+    <div id="premiumModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 transform transition-all">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">💎 Upgrade to Premium</h3>
+                <p class="text-gray-600 mb-6">Unlock advanced AI features, multilingual support, and premium browser tools.</p>
+                <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                    <p class="text-sm text-gray-700 mb-2">Send payment to:</p>
+                    <p class="font-mono text-lg font-bold text-blue-600">6037-9919-8765-4321</p>
+                    <p class="text-xs text-gray-500 mt-2">After payment, contact support for your premium access code</p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closePremiumModal()" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-full hover:bg-gray-400 transition-colors flex-1">
+                        Cancel
+                    </button>
+                    <button onclick="confirmPayment()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors flex-1">
+                        I've Paid
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secret Access Modal -->
+    <div id="secretModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 transform transition-all">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">🔑 Secret Access</h3>
+                <p class="text-gray-600 mb-6">Enter your premium access code to unlock all features:</p>
+                <input type="password" id="secretCode" placeholder="Enter access code..." class="w-full p-3 border rounded-full outline-none mb-6 text-center">
+                <div class="flex gap-3">
+                    <button onclick="closeSecretModal()" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-full hover:bg-gray-400 transition-colors flex-1">
+                        Cancel
+                    </button>
+                    <button onclick="checkSecretCode()" class="bg-gray-600 text-white px-6 py-3 rounded-full hover:bg-gray-700 transition-colors flex-1">
+                        Unlock
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio for engine start -->
+    <audio id="engineSound" preload="auto">
+        <source src="engine-start.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Play engine sound on page load
+        window.addEventListener('load', function() {
+            const audio = document.getElementById('engineSound');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Audio autoplay prevented'));
+        });
+
+        // Dark/Light theme toggle
+        let isDarkMode = false;
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const body = document.body;
+            if (isDarkMode) {
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#ffffff';
+                // Change all white backgrounds to dark
+                document.querySelectorAll('.bg-white').forEach(el => {
+                    el.classList.remove('bg-white');
+                    el.classList.add('bg-gray-800');
+                });
+                document.querySelectorAll('.bg-gray-50').forEach(el => {
+                    el.classList.remove('bg-gray-50');
+                    el.classList.add('bg-gray-900');
+                });
+                document.querySelectorAll('.bg-gray-100').forEach(el => {
+                    el.classList.remove('bg-gray-100');
+                    el.classList.add('bg-gray-800');
+                });
+                document.querySelectorAll('.text-gray-800').forEach(el => {
+                    el.classList.remove('text-gray-800');
+                    el.classList.add('text-white');
+                });
+            } else {
+                body.style.backgroundColor = '';
+                body.style.color = '';
+                // Restore original colors
+                document.querySelectorAll('.bg-gray-800').forEach(el => {
+                    if (!el.classList.contains('bg-gray-800')) return;
+                    el.classList.remove('bg-gray-800');
+                    el.classList.add('bg-white');
+                });
+                document.querySelectorAll('.bg-gray-900').forEach(el => {
+                    el.classList.remove('bg-gray-900');
+                    el.classList.add('bg-gray-50');
+                });
+                document.querySelectorAll('.text-white').forEach(el => {
+                    if (el.closest('.gradient-bg') || el.closest('footer')) return;
+                    el.classList.remove('text-white');
+                    el.classList.add('text-gray-800');
+                });
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Brand information data
+        const brandInfo = {
+            'Rolls-Royce': 'The pinnacle of luxury automotive craftsmanship. Founded in 1904, Rolls-Royce represents the ultimate in bespoke luxury vehicles with unparalleled attention to detail.',
+            'Bentley': 'British luxury grand touring cars combining performance with opulence. Known for their powerful engines and exquisite handcrafted interiors since 1919.',
+            'Aston Martin': 'Iconic British sports cars featured in James Bond films. Renowned for elegant design and high-performance engineering since 1913.',
+            'Jaguar': 'British luxury vehicles known for their distinctive design and sporting heritage. Combining grace, pace, and space since 1935.',
+            'Tesla': 'Revolutionary electric vehicles leading the sustainable transportation revolution. Founded by Elon Musk, pioneering autonomous driving technology.',
+            'Ford': 'American automotive pioneer that revolutionized mass production. From the Model T to modern F-150, building tough and reliable vehicles since 1903.',
+            'Chevrolet': 'Iconic American brand offering vehicles for every lifestyle. From the legendary Corvette to practical family cars since 1911.',
+            'Cadillac': 'American luxury division of General Motors. Setting standards for luxury, innovation, and style since 1902.',
+            'Mercedes-Benz': 'German luxury automotive excellence. Inventor of the automobile, continuing to lead in innovation, safety, and luxury since 1886.',
+            'BMW': 'Bavarian Motor Works - the ultimate driving machine. Combining luxury with performance and innovative technology since 1916.',
+            'Audi': 'German engineering excellence with "Vorsprung durch Technik" (Advancement through Technology). Premium vehicles with cutting-edge technology since 1909.',
+            'Porsche': 'German sports car legend. From the iconic 911 to modern electric Taycan, delivering pure driving pleasure since 1931.'
+        };
+
+        // Show brand information modal
+        function showBrandInfo(brand) {
+            document.getElementById('brandName').textContent = brand;
+            document.getElementById('brandDescription').textContent = brandInfo[brand];
+            document.getElementById('brandModal').classList.remove('hidden');
+            document.getElementById('brandModal').classList.add('flex');
+        }
+
+        // Close brand modal
+        function closeBrandModal() {
+            document.getElementById('brandModal').classList.add('hidden');
+            document.getElementById('brandModal').classList.remove('flex');
+        }
+
+        // Show ChatBot
+        function showChatBot() {
+            document.getElementById('chatSection').classList.remove('hidden');
+            document.getElementById('chatSection').classList.add('flex');
+        }
+
+        // Close ChatBot
+        function closeChatBot() {
+            document.getElementById('chatSection').classList.add('hidden');
+            document.getElementById('chatSection').classList.remove('flex');
+        }
+
+        // Show Browser
+        function showBrowser() {
+            document.getElementById('browserSection').classList.remove('hidden');
+            document.getElementById('browserSection').classList.add('flex');
+        }
+
+        // Close Browser
+        function closeBrowser() {
+            document.getElementById('browserSection').classList.add('hidden');
+            document.getElementById('browserSection').classList.remove('flex');
+        }
+
+        // Premium access status
+        let isPremiumUser = false;
+        let isFreeUser = false;
+
+        // Send Chat Message
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            
+            if (input.value.trim()) {
+                // Add user message
+                messages.innerHTML += `
+                    <div class="mb-4 p-4 bg-orange-100 rounded-lg text-right">
+                        <strong>You:</strong> ${input.value}
+                    </div>
+                `;
+                
+                const userQuestion = input.value.toLowerCase();
+                input.value = '';
+                
+                // Add bot response
+                setTimeout(() => {
+                    let response = '';
+                    
+                    if (isPremiumUser) {
+                        // Premium responses with multilingual support
+                        if (userQuestion.includes('bmw')) {
+                            response = 'BMW (Bavarian Motor Works) - Premium Analysis: One of Germany\'s premier automotive brands. "The Ultimate Driving Machine" since 1916. Popular models: 3 Series (€45,000-€65,000), X5 (€70,000-€90,000), M3 (€80,000+). Advanced features: iDrive system, xDrive AWD, ConnectedDrive. Market position: Premium luxury segment with exceptional engineering quality.';
+                        } else if (userQuestion.includes('mercedes') || userQuestion.includes('benz')) {
+                            response = 'Mercedes-Benz - Premium Analysis: German luxury automotive excellence since 1886. Inventor of the automobile. Top models: S-Class (€100,000+), AMG series (€80,000-€200,000), G-Class (€120,000+). Technologies: MBUX, 4MATIC, AMG Performance. Leading innovation in safety and luxury automotive technology.';
+                        } else if (userQuestion.includes('hello') || userQuestion.includes('7')) {
+                            response = 'Hello! Premium AI activated. I can provide detailed automotive analysis, comprehensive specifications, real-time pricing, and advanced technical comparisons. What automotive information would you like to explore?';
+                        } else {
+                            response = 'Premium AI: I can provide detailed analysis, real-time pricing, technical specifications, and comprehensive comparisons. Ask me about any car brand, model specifications, or automotive technology!';
+                        }
+                    } else if (isFreeUser) {
+                        // Limited free responses
+                        response = 'Free Version: Basic car information available. For detailed analysis, pricing, and multilingual support, please upgrade to premium. Limited to English responses only.';
+                    } else {
+                        // Default limited response
+                        response = 'Please select your access level using the buttons below to continue. Premium users get advanced features and multilingual support.';
+                    }
+                    
+                    messages.innerHTML += `
+                        <div class="mb-4 p-4 bg-gray-100 rounded-lg">
+                            <strong>AI Assistant:</strong> ${response}
+                        </div>
+                    `;
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1000);
+                
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        // Premium upgrade functions
+        function showPremiumUpgrade() {
+            document.getElementById('premiumModal').classList.remove('hidden');
+            document.getElementById('premiumModal').classList.add('flex');
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premiumModal').classList.add('hidden');
+            document.getElementById('premiumModal').classList.remove('flex');
+        }
+
+        function confirmPayment() {
+            alert('Thank you! After payment verification, you will receive your premium access code via email. Contact support with your payment confirmation.');
+            closePremiumModal();
+        }
+
+        function showSecretAccess() {
+            document.getElementById('secretModal').classList.remove('hidden');
+            document.getElementById('secretModal').classList.add('flex');
+        }
+
+        function closeSecretModal() {
+            document.getElementById('secretModal').classList.add('hidden');
+            document.getElementById('secretModal').classList.remove('flex');
+            document.getElementById('secretCode').value = '';
+        }
+
+        function checkSecretCode() {
+            const code = document.getElementById('secretCode').value;
+            if (code === '7') {
+                isPremiumUser = true;
+                isFreeUser = false;
+                alert('🎉 Premium Access Unlocked! You now have full access to advanced AI features, detailed analysis, and premium browser tools.');
+                closeSecretModal();
+                // Update chat message
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML += `
+                    <div class="mb-4 p-4 bg-green-100 rounded-lg">
+                        <strong>System:</strong> 🎉 Premium features activated! AI can now provide advanced automotive analysis and detailed specifications.
+                    </div>
+                `;
+            } else {
+                alert('❌ Invalid access code. Please contact support or upgrade to premium for your access code.');
+            }
+        }
+
+        function showFreeVersion() {
+            isFreeUser = true;
+            isPremiumUser = false;
+            alert('🆓 Free version activated. You have access to basic features only. Upgrade to premium for advanced capabilities.');
+            const messages = document.getElementById('chatMessages');
+            messages.innerHTML += `
+                <div class="mb-4 p-4 bg-blue-100 rounded-lg">
+                    <strong>System:</strong> 🆓 Free version activated. Basic automotive information available. Upgrade for premium features.
+                </div>
+            `;
+        }
+
+        // Show Analytics (Demo)
+        function showAnalytics() {
+            alert('📊 Analytics Dashboard\n\nThis would display comprehensive automotive data including:\n\n• Market trends and sales data\n• Brand performance metrics\n• Consumer preference insights\n• Technical specification comparisons\n• Price trend analysis\n\nNote: This is a demo interface. The full analytics dashboard would show real-time data visualizations.');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('brandModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBrandModal();
+            }
+        });
+
+
+
+        // Add some interactive animations on scroll
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.floating');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9808cf1061d20a3d',t:'MTc1ODExNDI2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
