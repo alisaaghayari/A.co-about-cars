@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-AI - Advanced AI Assistant</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .message-animation {
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .ai-logo {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .space-bg {
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f23 70%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .robot-thinking {
+            animation: robotThink 2s ease-in-out infinite;
+        }
+        
+        @keyframes robotThink {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            75% { transform: scale(0.95) rotate(-2deg); }
+        }
+        
+        .voice-wave {
+            animation: wave 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 40px; }
+        }
+        
+        .pulse-ring {
+            animation: pulseRing 2s infinite;
+        }
+        
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .login-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="login-card rounded-3xl p-8 w-full max-w-md neon-glow">
+            <div class="text-center mb-8">
+                <div class="ai-logo text-6xl mb-4">🤖</div>
+                <h1 class="text-3xl font-bold text-white mb-2">A-AI</h1>
+                <p class="text-gray-300 text-sm">Advanced AI Assistant</p>
+            </div>
+            
+            <form id="emailLoginForm" class="space-y-4">
+                <input type="email" id="emailInput" placeholder="Enter your email" class="w-full p-4 glass-effect rounded-xl text-white placeholder-gray-300 border-0 focus:ring-2 focus:ring-purple-400" required>
+                <input type="password" placeholder="Password" class="w-full p-4 glass-effect rounded-xl text-white placeholder-gray-300 border-0 focus:ring-2 focus:ring-purple-400" required>
+                <button type="submit" class="w-full p-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-300">
+                    Login to A-AI
+                </button>
+            </form>
+            
+            <div class="text-center mt-6">
+                <button onclick="quickLogin()" class="text-blue-400 hover:text-blue-300 text-sm">
+                    Quick Login (No Password)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="hidden container mx-auto max-w-6xl h-screen flex flex-col">
+        <!-- Header -->
+        <div class="gradient-bg text-white p-3 rounded-b-2xl shadow-lg relative z-10">
+            <div class="flex items-center justify-between relative z-10">
+                <div class="flex items-center gap-2">
+                    <div class="ai-logo text-2xl">🤖</div>
+                    <div>
+                        <h1 class="text-lg font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                            A-AI
+                        </h1>
+                        <p class="text-blue-100 text-xs">Advanced AI Assistant</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="userInfo" class="text-xs text-blue-200 hidden sm:block"></span>
+                    <button id="voiceMode" class="px-3 py-2 text-xs glass-effect hover:bg-white/20 text-white rounded-lg transition-all duration-300 flex items-center gap-1">
+                        🎤 <span class="hidden sm:inline">Voice</span>
+                    </button>
+                    <button id="clearChat" class="px-3 py-2 text-xs glass-effect hover:bg-white/20 text-white rounded-lg transition-all duration-300">
+                        🗑️ <span class="hidden sm:inline">Clear</span>
+                    </button>
+                    <button id="logout" class="px-3 py-2 text-xs glass-effect hover:bg-white/20 text-white rounded-lg transition-all duration-300">
+                        🚪 <span class="hidden sm:inline">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <div class="message-animation glass-effect border border-blue-400/30 p-6 rounded-2xl neon-glow">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-lg font-bold ai-logo">🤖</div>
+                    <div>
+                        <span class="text-white font-medium">A-AI</span>
+                        <div class="text-blue-300 text-xs">Advanced AI Assistant</div>
+                    </div>
+                </div>
+                <p class="text-white leading-relaxed">
+                    Hello and welcome! 👋 I'm A-AI, your advanced AI assistant.
+                    <br><br>
+                    🎤 Click the "Voice" button for voice conversation
+                    <br>💬 Or chat with me right here
+                    <br><br>
+                    How can I help you today?
+                </p>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 glass-effect border-t border-white/20">
+            <div class="max-w-4xl mx-auto">
+                <form id="chatForm" class="flex gap-2">
+                    <div class="flex-1 relative">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Type your message here..."
+                            class="w-full p-3 glass-effect border border-white/30 rounded-xl resize-none focus:ring-2 focus:ring-purple-400 focus:border-transparent text-white placeholder-gray-300 text-sm"
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button 
+                        type="submit" 
+                        id="sendButton"
+                        class="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-full font-medium transition-all duration-300 flex items-center justify-center"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Mode Screen -->
+    <div id="voiceScreen" class="hidden fixed inset-0 z-50 space-bg">
+        <!-- Stars -->
+        <div id="stars"></div>
+        
+        <div class="flex flex-col items-center justify-center h-full p-4">
+            <!-- Robot Avatar -->
+            <div class="mb-8">
+                <div id="robotAvatar" class="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-6xl relative">
+                    🤖
+                    <div id="pulseRing" class="absolute inset-0 rounded-full border-4 border-blue-400 pulse-ring hidden"></div>
+                </div>
+            </div>
+            
+            <!-- Status -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-white mb-2">A-AI - Voice Chat Mode</h2>
+                <p id="voiceStatus" class="text-blue-300">Ready to start voice conversation</p>
+            </div>
+            
+            <!-- Voice Visualizer -->
+            <div id="voiceVisualizer" class="flex items-center gap-1 mb-8 hidden">
+                <div class="voice-wave w-2 bg-blue-400 rounded-full"></div>
+                <div class="voice-wave w-2 bg-purple-400 rounded-full" style="animation-delay: 0.1s"></div>
+                <div class="voice-wave w-2 bg-pink-400 rounded-full" style="animation-delay: 0.2s"></div>
+                <div class="voice-wave w-2 bg-blue-400 rounded-full" style="animation-delay: 0.3s"></div>
+                <div class="voice-wave w-2 bg-purple-400 rounded-full" style="animation-delay: 0.4s"></div>
+            </div>
+            
+            <!-- Controls -->
+            <div class="flex gap-4 flex-wrap justify-center">
+                <button id="testVoice" class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white rounded-lg font-medium transition-all duration-300 flex items-center gap-2 text-sm">
+                    🔧 Test Voice
+                </button>
+                <button id="startVoice" class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-medium transition-all duration-300 flex items-center gap-2">
+                    🎤 Start Chat
+                </button>
+                <button id="exitVoice" class="px-6 py-3 glass-effect hover:bg-white/20 text-white rounded-xl font-medium transition-all duration-300">
+                    🔙 Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let chatHistory = [];
+        let isListening = false;
+        let recognition = null;
+        let speechSynthesis = window.speechSynthesis;
+        let currentUser = null;
+        let isVoiceMode = false;
+
+        // DOM elements
+        const loginScreen = document.getElementById('loginScreen');
+        const mainApp = document.getElementById('mainApp');
+        const voiceScreen = document.getElementById('voiceScreen');
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const chatForm = document.getElementById('chatForm');
+        const clearChat = document.getElementById('clearChat');
+        const voiceMode = document.getElementById('voiceMode');
+        const logout = document.getElementById('logout');
+        const emailLoginForm = document.getElementById('emailLoginForm');
+        const startVoice = document.getElementById('startVoice');
+        const testVoice = document.getElementById('testVoice');
+        const exitVoice = document.getElementById('exitVoice');
+        const voiceStatus = document.getElementById('voiceStatus');
+        const robotAvatar = document.getElementById('robotAvatar');
+        const userInfo = document.getElementById('userInfo');
+        const voiceVisualizer = document.getElementById('voiceVisualizer');
+        const pulseRing = document.getElementById('pulseRing');
+
+        // Initialize stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize Speech Recognition
+        function initSpeechRecognition() {
+            try {
+                // Check if browser supports speech recognition
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    console.log('Browser does not support speech recognition');
+                    return false;
+                }
+
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                // Configure recognition settings
+                recognition.lang = 'en-US';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onstart = function() {
+                    console.log('✅ Speech recognition started');
+                    isListening = true;
+                    if (voiceStatus) voiceStatus.textContent = '🎤 Listening... Please speak';
+                    if (robotAvatar) robotAvatar.classList.add('robot-thinking');
+                    if (voiceVisualizer) voiceVisualizer.classList.remove('hidden');
+                    if (pulseRing) pulseRing.classList.remove('hidden');
+                    if (startVoice) startVoice.innerHTML = '🔴 Stop Chat';
+                };
+
+                recognition.onresult = function(event) {
+                    console.log('📝 Result received:', event.results);
+                    if (event.results && event.results.length > 0) {
+                        const transcript = event.results[0][0].transcript.trim();
+                        console.log('🗣️ Recognized text:', transcript);
+                        if (transcript && transcript.length > 0) {
+                            if (voiceStatus) voiceStatus.textContent = `You said: "${transcript}"`;
+                            handleVoiceInput(transcript);
+                        } else {
+                            if (voiceStatus) voiceStatus.textContent = 'Empty text received - please try again';
+                        }
+                    }
+                };
+
+                recognition.onend = function() {
+                    console.log('⏹️ Speech recognition ended');
+                    isListening = false;
+                    if (robotAvatar) robotAvatar.classList.remove('robot-thinking');
+                    if (voiceVisualizer) voiceVisualizer.classList.add('hidden');
+                    if (pulseRing) pulseRing.classList.add('hidden');
+                    if (startVoice) startVoice.innerHTML = '🎤 Start Chat';
+                    
+                    if (isVoiceMode && voiceStatus) {
+                        voiceStatus.textContent = 'Ready for next message... (click to start)';
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('❌ Speech recognition error:', event.error);
+                    isListening = false;
+                    if (robotAvatar) robotAvatar.classList.remove('robot-thinking');
+                    if (voiceVisualizer) voiceVisualizer.classList.add('hidden');
+                    if (pulseRing) pulseRing.classList.add('hidden');
+                    if (startVoice) startVoice.innerHTML = '🎤 Start Chat';
+                    
+                    let errorMessage = 'Speech recognition error';
+                    switch(event.error) {
+                        case 'not-allowed':
+                            errorMessage = '🚫 Please allow microphone access';
+                            alert('To use voice features, please:\n\n1. Click the lock icon next to the address\n2. Allow microphone access\n3. Refresh the page');
+                            break;
+                        case 'no-speech':
+                            errorMessage = '🔇 No speech detected - please try again';
+                            break;
+                        case 'network':
+                            errorMessage = '🌐 Network connection issue';
+                            break;
+                        case 'audio-capture':
+                            errorMessage = '🎤 Microphone access problem';
+                            break;
+                        default:
+                            errorMessage = `Error: ${event.error}`;
+                    }
+                    if (voiceStatus) voiceStatus.textContent = errorMessage;
+                };
+                
+                console.log('✅ Speech recognition initialized');
+                return true;
+            } catch (error) {
+                console.error('❌ Error initializing speech recognition:', error);
+                return false;
+            }
+        }
+
+        // Start listening function
+        function startListening() {
+            if (recognition && !isListening) {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error('Error starting speech recognition:', error);
+                    voiceStatus.textContent = 'Error starting speech recognition';
+                }
+            }
+        }
+
+        // Text to Speech function
+        function speakText(text) {
+            if (speechSynthesis) {
+                speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                utterance.onstart = function() {
+                    robotAvatar.classList.add('robot-thinking');
+                    voiceStatus.textContent = 'Responding...';
+                };
+                
+                utterance.onend = function() {
+                    robotAvatar.classList.remove('robot-thinking');
+                    if (isVoiceMode) {
+                        voiceStatus.textContent = 'Ready for next message...';
+                        // Start listening again after speaking
+                        setTimeout(() => {
+                            if (isVoiceMode) {
+                                startListening();
+                            }
+                        }, 1000);
+                    }
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Handle voice input
+        function handleVoiceInput(input) {
+            const response = generateAIResponse(input, true);
+            speakText(response);
+        }
+
+        // Quick login function
+        function quickLogin() {
+            const email = 'user@example.com';
+            loginUser('User', email);
+        }
+
+        // Login user function
+        function loginUser(name, email) {
+            currentUser = { name: name, email: email };
+            
+            loginScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            
+            // Update user info in header
+            userInfo.textContent = email;
+            
+            // Add welcome message
+            setTimeout(() => {
+                addMessage(`Hello and welcome ${name}! 🎉\n\nYou have successfully logged into A-AI.\nYour email: ${email}\n\nI'm A-AI, your advanced AI assistant.\n\nHow can I help you today?`, 'ai');
+            }, 500);
+        }
+
+        // Email login form handler
+        emailLoginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value.trim();
+            if (email) {
+                loginUser('User', email);
+            }
+        });
+
+        // Voice mode handlers
+        voiceMode.addEventListener('click', function() {
+            mainApp.classList.add('hidden');
+            voiceScreen.classList.remove('hidden');
+            isVoiceMode = true;
+            createStars();
+            
+            // Initialize speech recognition if not already done
+            if (!recognition) {
+                const speechSupported = initSpeechRecognition();
+                if (!speechSupported) {
+                    alert('Unfortunately, your browser does not support speech recognition\n\nPlease use Chrome, Edge, or Safari');
+                    exitVoice.click();
+                    return;
+                }
+            }
+        });
+
+        // Test voice functionality
+        testVoice.addEventListener('click', function() {
+            console.log('🧪 Testing voice functionality...');
+            voiceStatus.textContent = 'Testing voice capabilities...';
+            
+            // Test 1: Check browser support
+            const hasWebkitSpeech = 'webkitSpeechRecognition' in window;
+            const hasSpeech = 'SpeechRecognition' in window;
+            const hasMediaDevices = 'mediaDevices' in navigator;
+            const hasSpeechSynthesis = 'speechSynthesis' in window;
+            
+            console.log('🔍 Test results:');
+            console.log('- webkitSpeechRecognition:', hasWebkitSpeech);
+            console.log('- SpeechRecognition:', hasSpeech);
+            console.log('- mediaDevices:', hasMediaDevices);
+            console.log('- speechSynthesis:', hasSpeechSynthesis);
+            
+            let testResults = '🧪 Test Results:\n\n';
+            testResults += `✅ Speech Recognition: ${hasWebkitSpeech || hasSpeech ? 'Supported' : '❌ Not Supported'}\n`;
+            testResults += `✅ Microphone Access: ${hasMediaDevices ? 'Available' : '❌ Not Available'}\n`;
+            testResults += `✅ Speech Synthesis: ${hasSpeechSynthesis ? 'Supported' : '❌ Not Supported'}\n\n`;
+            
+            if (hasWebkitSpeech || hasSpeech) {
+                testResults += '🎤 For full test, click "Start Chat"';
+                voiceStatus.textContent = 'Test successful - Ready to use!';
+            } else {
+                testResults += '❌ Please use Chrome, Edge, or Safari';
+                voiceStatus.textContent = 'Browser not supported';
+            }
+            
+            alert(testResults);
+            
+            // Test speech synthesis
+            if (hasSpeechSynthesis) {
+                setTimeout(() => {
+                    speakText('Voice test was successful');
+                }, 1000);
+            }
+        });
+
+        startVoice.addEventListener('click', function() {
+            console.log('🔘 Voice button clicked - Current status:', isListening);
+            
+            if (!recognition) {
+                console.log('🔧 Reinitializing speech recognition...');
+                const speechSupported = initSpeechRecognition();
+                if (!speechSupported) {
+                    alert('❌ Unfortunately, your browser does not support speech recognition\n\n✅ Supported browsers:\n• Chrome\n• Edge\n• Safari');
+                    return;
+                }
+            }
+            
+            if (!isListening) {
+                console.log('▶️ Starting to listen...');
+                // Request microphone permission first
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function(stream) {
+                        console.log('✅ Microphone permission granted');
+                        stream.getTracks().forEach(track => track.stop()); // Stop the stream
+                        startListening();
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Error getting microphone permission:', error);
+                        alert('🎤 To use voice features:\n\n1. Allow microphone access\n2. Make sure microphone is connected\n3. Try again');
+                        voiceStatus.textContent = 'Error accessing microphone';
+                    });
+            } else {
+                console.log('⏹️ Stopping listening...');
+                if (recognition) {
+                    recognition.stop();
+                }
+                isListening = false;
+                this.innerHTML = '🎤 Start Chat';
+                voiceStatus.textContent = 'Chat stopped';
+                robotAvatar.classList.remove('robot-thinking');
+                voiceVisualizer.classList.add('hidden');
+                pulseRing.classList.add('hidden');
+            }
+        });
+
+        exitVoice.addEventListener('click', function() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+            isListening = false;
+            isVoiceMode = false;
+            voiceScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            
+            // Reset voice button
+            startVoice.innerHTML = '🎤 Start Chat';
+        });
+
+        // Logout handler
+        logout.addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                chatHistory = [];
+                isVoiceMode = false;
+                if (recognition && isListening) {
+                    recognition.stop();
+                }
+                mainApp.classList.add('hidden');
+                voiceScreen.classList.add('hidden');
+                loginScreen.classList.remove('hidden');
+                
+                // Reset chat
+                chatContainer.innerHTML = `
+                    <div class="message-animation glass-effect border border-blue-400/30 p-6 rounded-2xl neon-glow">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-lg font-bold ai-logo">🤖</div>
+                            <div>
+                                <span class="text-white font-medium">A-AI</span>
+                                <div class="text-blue-300 text-xs">Advanced AI Assistant</div>
+                            </div>
+                        </div>
+                        <p class="text-white leading-relaxed">
+                            Hello and welcome! 👋 I'm A-AI, your advanced AI assistant.
+                            <br><br>
+                            🎤 Click the "Voice" button for voice conversation
+                            <br>💬 Or chat with me right here
+                            <br><br>
+                            How can I help you today?
+                        </p>
+                    </div>
+                `;
+            }
+        });
+
+        // Chat functionality
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            messageInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Generate AI response
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateAIResponse(message);
+                addMessage(response, 'ai');
+            }, 1500 + Math.random() * 1000);
+        });
+
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-animation';
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="glass-effect border border-green-400/30 p-5 rounded-2xl mr-12 neon-glow">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-sm font-bold">👤</div>
+                            <div>
+                                <span class="text-white font-medium">You</span>
+                                <div class="text-green-300 text-xs">User</div>
+                            </div>
+                        </div>
+                        <p class="text-white leading-relaxed">${content}</p>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="glass-effect border border-blue-400/30 p-5 rounded-2xl ml-12 neon-glow">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold ai-logo">🤖</div>
+                            <div>
+                                <span class="text-white font-medium">A-AI</span>
+                                <div class="text-blue-300 text-xs">Advanced AI Assistant</div>
+                            </div>
+                            <button onclick="speakText('${content.replace(/'/g, "\\'").replace(/"/g, '\\"')}')" class="mr-auto p-2 glass-effect rounded-lg hover:bg-white/20 transition-colors">
+                                🔊
+                            </button>
+                        </div>
+                        <p class="text-white leading-relaxed">${content}</p>
+                    </div>
+                `;
+            }
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            chatHistory.push({ sender, content });
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'glass-effect border border-blue-400/30 p-4 rounded-2xl ml-12';
+            typingDiv.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">🤖</div>
+                    <span class="text-white text-sm">Typing...</span>
+                    <div class="flex gap-1 mr-2">
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function generateAIResponse(userMessage, isVoice = false) {
+            // Simple AI responses without mentioning other AI services
+            const responses = {
+                greetings: [
+                    'Hello and greetings! How can I help you?',
+                    'Hello! I\'m happy to talk with you. What can I do for you?',
+                    'Greetings! I\'m ready to answer your questions.',
+                    'Hello there! How can I be helpful to you today?'
+                ],
+                questions: [
+                    'That\'s an interesting question! Based on available information, I can say that...',
+                    'Well, I\'ve analyzed this topic. In my opinion...',
+                    'This is a complex topic, but I\'ll try to explain it in the best way...',
+                    'After analysis, the best answer is that...'
+                ],
+                help: [
+                    'Of course I can help you! Please explain more about what you need.',
+                    'I\'m happy to help you. What topic would you like to explore?',
+                    'Absolutely! I\'m here to help you. What questions do you have?'
+                ],
+                general: [
+                    'That\'s an interesting topic! Let\'s explore it together...',
+                    'I have a lot of information about this topic. Let me explain...',
+                    'Well, this question needs careful analysis. In my view...',
+                    'Based on available knowledge, I can answer like this...'
+                ]
+            };
+
+            let response = '';
+            
+            // Check message type and generate appropriate response
+            if (userMessage.toLowerCase().includes('hello') || userMessage.toLowerCase().includes('hi') || userMessage.toLowerCase().includes('hey') || userMessage.includes('سلام') || userMessage.includes('درود')) {
+                response = responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+            } else if (userMessage.toLowerCase().includes('help') || userMessage.includes('کمک')) {
+                response = responses.help[Math.floor(Math.random() * responses.help.length)];
+            } else if (userMessage.includes('?') || userMessage.toLowerCase().includes('what') || userMessage.toLowerCase().includes('how') || userMessage.toLowerCase().includes('why') || userMessage.toLowerCase().includes('when') || userMessage.toLowerCase().includes('where')) {
+                response = responses.questions[Math.floor(Math.random() * responses.questions.length)];
+            } else {
+                response = responses.general[Math.floor(Math.random() * responses.general.length)];
+            }
+
+            // Add contextual information
+            if (userMessage.length > 10) {
+                response += ` Regarding "${userMessage}" that you asked, I should say that this topic has various aspects and needs more detailed analysis.`;
+            }
+
+            // Add helpful ending for voice mode
+            if (isVoice) {
+                response += ' Do you have any other questions?';
+            }
+
+            return response;
+        }
+
+        // Clear chat
+        clearChat.addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear the chat?')) {
+                chatContainer.innerHTML = `
+                    <div class="message-animation glass-effect border border-blue-400/30 p-6 rounded-2xl neon-glow">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-lg font-bold ai-logo">🤖</div>
+                            <div>
+                                <span class="text-white font-medium">A-AI</span>
+                                <div class="text-blue-300 text-xs">Advanced AI Assistant</div>
+                            </div>
+                        </div>
+                        <p class="text-white leading-relaxed">
+                            Chat cleared! ✨ Ready to start a new conversation.
+                            <br><br>
+                            How can I help you?
+                        </p>
+                    </div>
+                `;
+                chatHistory = [];
+            }
+        });
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Enter key to send
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Initialize app
+        createStars();
+        
+        // Initialize speech recognition on page load
+        initSpeechRecognition();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'981fe10af65a1e6c',t:'MTc1ODM1NjE2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
